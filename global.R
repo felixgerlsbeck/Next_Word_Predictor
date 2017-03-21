@@ -1,3 +1,4 @@
+##global.R loads all required packages and data for the app
 
 library(shiny)
 library(dplyr)

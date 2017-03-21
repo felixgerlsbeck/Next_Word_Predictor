@@ -1,12 +1,15 @@
 source("global.R")
+##Require the algorithm function in separate R script
 source("stupid_backoff.R")
 
-# Define server logic required to draw a histogram
 shinyServer(function(input, output) {
         prediction <- reactive ({
         inputText <- input$text
         prediction <- predict(inputText)
         })
+        ##This outputs the concatenated text "input + most likely next word"
+        ##If no input is entered, it returns a message
+        ##If word cannot be recognized, it returns an error message
         output$MostLikelySentence <- renderText(
                 if (input$text == "") { 
                         "Please enter some text on the left"
@@ -16,6 +19,7 @@ shinyServer(function(input, output) {
                         } else {
                         paste(as.character(input$text), as.character(prediction()$LastWord[1]))
                         })
+        ##This outputs the top 5 predicted words as a word cloud
         output$wordcloud <- renderPlot(
                 if (anyNA(prediction()$LastWord)) {
                         NULL
